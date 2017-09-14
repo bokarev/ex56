@@ -1170,6 +1170,120 @@ global $wpdb;
 			$curs_parser[590]['curs1'] = $def; 
 			$curs_parser[590]['curs2'] = is_my_money(1 / $curs_parser[589]['curs2'] * $def);			
 		}	
+	}
+
+	$arrs = array(
+		'BTCUSD' => array(
+			'id1' => 700,
+			'sum1' => 1,
+			'id2' => 701,
+			'sum2' => 1000,			
+		),
+		'LTCUSD' => array(
+			'id1' => 702,
+			'sum1' => 1,
+			'id2' => 703,
+			'sum2' => 1000,			
+		),
+		'LTCBTC' => array(
+			'id1' => 704,
+			'sum1' => 1,
+			'id2' => 705,
+			'sum2' => 1,			
+		),
+		'ETHUSD' => array(
+			'id1' => 706,
+			'sum1' => 1,
+			'id2' => 707,
+			'sum2' => 1000,			
+		),
+		'ETHBTC' => array(
+			'id1' => 708,
+			'sum1' => 1,
+			'id2' => 709,
+			'sum2' => 1,			
+		),
+		'ETCBTC' => array(
+			'id1' => 710,
+			'sum1' => 1000,
+			'id2' => 711,
+			'sum2' => 1,			
+		),
+		'ETCUSD' => array(
+			'id1' => 712,
+			'sum1' => 1,
+			'id2' => 713,
+			'sum2' => 1000,			
+		),
+		'XMRUSD' => array(
+			'id1' => 714,
+			'sum1' => 1,
+			'id2' => 715,
+			'sum2' => 1000,			
+		),
+		'XRPUSD' => array(
+			'id1' => 716,
+			'sum1' => 1,
+			'id2' => 717,
+			'sum2' => 1,			
+		),		
+		'BCHUSD' => array(
+			'id1' => 718,
+			'sum1' => 1,
+			'id2' => 719,
+			'sum2' => 1000,			
+		),
+		'BCCUSD' => array(
+			'id1' => 720,
+			'sum1' => 1,
+			'id2' => 721,
+			'sum2' => 1000,			
+		),
+		'BCUUSD' => array(
+			'id1' => 722,
+			'sum1' => 1,
+			'id2' => 723,
+			'sum2' => 1000,			
+		),	
+	);
+
+	$curl = get_curl_parser('https://api.bitfinex.com/v1/tickers?symbols', '', 'parser', 'bitfinex');
+	if(!$curl['err']){
+		$outs = @json_decode($curl['output']);
+		if(is_array($outs)){
+			foreach($arrs as $arr_id => $arr_data){
+				foreach($outs as $item){
+					if(isset($item->pair) and $item->pair == $arr_id){
+						$id1 = intval(is_isset($arr_data, 'id1'));
+						$sum1 = intval(is_isset($arr_data, 'sum1'));
+						$id2 = intval(is_isset($arr_data, 'id2'));
+						$sum2 = intval(is_isset($arr_data, 'sum2'));					
+						
+						if(is_isset($work_parser, $id1) == 1){
+							$key1 = trim(is_isset($config_parser, $id1));
+							if(!$key1){ $key1 = 'mid'; }
+							$ck1 = is_my_money($item->$key1);
+							$curs1 = def_parser_curs($parsers, $id1, $sum1);
+							if($ck1){
+								$curs_parser[$id1]['curs1'] = $curs1;
+								$curs_parser[$id1]['curs2'] = $ck1 * $curs1;
+							}
+						}
+						if(is_isset($work_parser, $id2) == 1){
+							$key2 = trim(is_isset($config_parser, $id2));
+							if(!$key2){ $key2 = 'mid'; }
+							$ck2def = is_my_money($item->$key2); 
+							$curs2 = def_parser_curs($parsers, $id2, $sum2);
+							if($curs2 and $ck2def){
+								$ck2 = is_my_money($curs2 / $ck2def);
+								$curs_parser[$id2]['curs1'] = $curs2; 
+								$curs_parser[$id2]['curs2'] = $ck2;
+							}						
+						}					
+					}
+				}
+			}	
+		} 
 	}	
 	
 	$curs_parser = apply_filters('before_load_curs_parser', $curs_parser, $work_parser, $config_parser, $parsers);

@@ -5,7 +5,7 @@ define('INSTALLER_PATH',dirname(__FILE__) . '/');
 define('DIR_PATH', str_replace('installer/','',INSTALLER_PATH));
 
 $php_version = '5.6'; //тут нужно указать версию php
-$ioncube_version = '5.0'; //тут нужно указать версию куба
+$ioncube_version = '6.0'; //тут нужно указать версию куба
 $old_prefix = 'pr_'; //тут пишем старый префикс БД
 $old_url = 'http://premiumexchanger.ru'; //старый url
 

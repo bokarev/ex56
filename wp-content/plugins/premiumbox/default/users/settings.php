@@ -70,7 +70,7 @@ global $wpdb, $premiumbox;
 		'user_skype' => __('Skype', 'pn'),
 		'website' => __('Website', 'pn'),
 		'user_passport' => __('Passport number', 'pn'),
-		'email' => __('E-mail', 'pn'),
+		'user_email' => __('E-mail', 'pn'),
 	);	
 	
 	foreach($chfields as $field_key => $field_val){
@@ -125,7 +125,7 @@ global $wpdb, $premiumbox;
 		'user_skype' => __('Skype', 'pn'),
 		'website' => __('Website', 'pn'),
 		'user_passport' => __('Passport number', 'pn'),
-		'email' => __('E-mail', 'pn'),
+		'user_email' => __('E-mail', 'pn'),
 	);	
 	$fields2 = array();
 	foreach($chfields as $k => $v){
